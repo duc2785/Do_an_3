@@ -39,7 +39,6 @@ public class read_csv {
                 double index_value = index_double.doubleValue();
                 double key;
 
-                // Thread.sleep(1000);
                 key = (index_value * 20);
                 // System.out.println(key);
                 int key_int = Double.valueOf(key).intValue();
@@ -71,7 +70,7 @@ public class read_csv {
 
     public static void main(String[] args) {
         File loop_training = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
-        devide_threshold(loop_training);
+        devide_threshold(loop_training);        
         List<Double> array = write_array(loop_training);
         System.out.println(array);
     }
