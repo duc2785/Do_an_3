@@ -47,7 +47,22 @@ public class transition_probability_matrix {
     
     }
 
-    public static int[][] create_matrix_bn(int[][] matrix_b1) {
+    public static double calculateProbabilityStandardDeviation(double[] probabilities) {
+        // Tính giá trị trung bình
+        double mean = Arrays.stream(probabilities).average().orElse(0.0);
+
+        // Tính tổng bình phương sai số
+        double sumOfSquaredDifferences = Arrays.stream(probabilities)
+                .map(probability -> Math.pow(probability - mean, 2))
+                .sum();
+
+        // Tính độ lệch chuẩn
+        double standardDeviation = Math.sqrt(sumOfSquaredDifferences / probabilities.length);
+
+        return standardDeviation;
+    }
+
+    public static int[][] create_matrix_b2(int[][] matrix_b1) {
     int[][] matrix_b2 = new int[400][400];
     
     // Gán các phần tử của ma trận là 0
@@ -75,6 +90,14 @@ public class transition_probability_matrix {
         key = (number * 20);
         int key_int = Double.valueOf(key).intValue();
         return key_int;
+    }
+
+    public static int get_key_2(double number1, double number2){
+        int key_1, key_2;
+        key_1 = get_key(number1);
+        key_2 = get_key(number2);
+        int key_int = (key_1 * 20 + key_2);
+        return key_int;   
     }
 
     public static int[][] create_matrix(File name_file) {
@@ -128,7 +151,7 @@ public class transition_probability_matrix {
     public static void main(String[] args) {
     File loop_training = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
     int[][] matrix_b1 = create_matrix(loop_training);
-    int[][] matrix_b2 = create_matrix_bn(matrix_b1);
+    int[][] matrix_b2 = create_matrix_b2(matrix_b1);
     rate_matrix(matrix_b1);
     System.out.println("...........................");
     float[][] matrix =  rate_matrix(matrix_b2);
