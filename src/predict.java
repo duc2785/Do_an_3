@@ -35,9 +35,9 @@ public class predict {
     }
 
     public static int predict_score(double[] arr_score, int num_pred, int[][] matrix){
-        File train = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
+        // File train = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
         // File w5_thus = new File("/home/duc/Java_Project/Do_an_3/src/LOOP_w5_thur_attack.csv");
-        int[][] matrix_train = transition_probability_matrix.create_matrix(train);
+        // int[][] matrix_train = transition_probability_matrix.create_matrix(train);
         // List<Double> array_loop = read_csv.write_array(w5_thus);
         // double pre_score = get_predict_scores(matrix_train);
         double pre_number = arr_score[0];
@@ -87,7 +87,7 @@ public class predict {
         File train = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
         File w5_thus = new File("/home/duc/Java_Project/Do_an_3/src/LOOP_w5_thur_attack.csv");
 
-        int[][] matrix_train_lv1 = transition_probability_matrix.create_matrix(train);
+        int[][] matrix_train_lv1 = transition_probability_matrix.create_matrix(train, 1);
         int[][] matrix_train_lv2 = transition_probability_matrix.create_matrix_b2(matrix_train_lv1);
 
         List<Double> array_loop = read_csv.write_array(w5_thus);

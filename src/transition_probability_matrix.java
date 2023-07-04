@@ -100,12 +100,12 @@ public class transition_probability_matrix {
         return key_int;   
     }
 
-    public static int[][] create_matrix(File name_file) {
-
-        int[][] matrix = new int[20][20];
+    public static int[][] create_matrix(File name_file, int level_matrix) {
+        int len_matrix = (int) Math.pow(20, level_matrix);
+        int[][] matrix = new int[len_matrix][len_matrix];
         // Gán các phần tử của ma trận là 0
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = 0;
             }
         }
@@ -114,26 +114,33 @@ public class transition_probability_matrix {
             Scanner train = new Scanner(name_file);
             train.useDelimiter(",");
 
-            while (train.hasNext()) {
+            List<Double> arr_train = read_csv.write_array(name_file);
 
-                String index = train.nextLine();
-                Double index_double = Double.valueOf(index);
-                int key_int = get_key(index_double);
+            switch (level_matrix){
+                case 1:
 
-                // System.out.println(previous_key);
-                if (previous_key == 100) {
-                    previous_key = key_int;
-                } else {
-                    int now_key = key_int;
-                    if (now_key == 20) {
-                        now_key = 19;
+                    int key_int = get_key(arr_train.get(0));
+
+                    // System.out.println(previous_key);
+                    if (previous_key == 100) {
+                        previous_key = key_int;
+                    } else {
+                        int now_key = key_int;
+                        if (now_key == 20) {
+                            now_key = 19;
+                        }
+                        matrix[previous_key][now_key] += 1;
+                        // System.out.println(matrix[previous_key][now_key]);
+                        previous_key = now_key;
                     }
-                    matrix[previous_key][now_key] += 1;
-                    // System.out.println(matrix[previous_key][now_key]);
-                    previous_key = now_key;
+                
+                    train.close();
+                    break;
+                case 2:
+                    
+                
                 }
-            }
-            train.close();
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -148,13 +155,13 @@ public class transition_probability_matrix {
     // int[][] matrix = create_matrix(loop_training);
     // }
 
-    public static void main(String[] args) {
-    File loop_training = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
-    int[][] matrix_b1 = create_matrix(loop_training);
-    int[][] matrix_b2 = create_matrix_b2(matrix_b1);
-    rate_matrix(matrix_b1);
-    System.out.println("...........................");
-    float[][] matrix =  rate_matrix(matrix_b2);
-    write_csv(matrix);
-}
+//     public static void main(String[] args) {
+//     File loop_training = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
+//     int[][] matrix_b1 = create_matrix(loop_training);
+//     int[][] matrix_b2 = create_matrix_b2(matrix_b1);
+//     rate_matrix(matrix_b1);
+//     System.out.println("...........................");
+//     float[][] matrix =  rate_matrix(matrix_b2);
+//     write_csv(matrix);
+// }
 }
