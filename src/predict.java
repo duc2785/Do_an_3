@@ -87,13 +87,14 @@ public class predict {
 
     public static void main(String[] args) {
         File train = new File("/home/duc/Java_Project/Do_an_3/src/loop_training.csv");
-        File w5_thus = new File("/home/duc/Java_Project/Do_an_3/src/LOOP_w5_thur_attack.csv");
+        File test1 = new File("/home/duc/Java_Project/Do_an_3/src/LOOP_w5_thur_attack.csv");
+        File test2 = new File("/home/duc/Java_Project/Do_an_3/src/LOOP_W5_Thurs_testing_normal.csv");
 
         int[][] matrix_train = transition_probability_matrix.create_matrix(train, 2);
         // int[][] matrix_train_lv2 =
         // transition_probability_matrix.create_matrix_b2(matrix_train_lv1);
 
-        List<Double> array_loop = read_csv.write_array(w5_thus);
+        List<Double> array_loop = read_csv.write_array(test2);
         double pre_index = array_loop.get(0);
         int anomaly_count = 0;
         int num_pred = 1;

@@ -24,4 +24,10 @@ public class median_filter {
 
         return filteredSignal;
     }
+    public static void main(String[] args) {
+        double[] abc= {1, 0, 0, 0.5, 1};
+        double[] a = applyMedianFilter(abc, 2);
+
+        System.out.println(a[3]);
+    }
 }

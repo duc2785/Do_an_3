@@ -4,8 +4,8 @@ import java.util.*;
 public class transition_probability_matrix {
     public static int previous_key = 100;
 
-    public static float[][] rate_matrix(int[][] matrix) {
-        float[][] matrix_rate = new float[400][400];
+    public static float[][] cal_rate(int[][] matrix) {
+        float[][] matrix_rate = new float[matrix.length][matrix.length];
         for (int i = 0; i < matrix.length; i++) {
             float total_row = 0;
             for (int j = 0; j < matrix[0].length; j++) {
@@ -14,9 +14,9 @@ public class transition_probability_matrix {
             for (int j = 0; j < matrix[0].length; j++) {
                 if (total_row != 0) {
                     // System.out.print(matrix[i][j] / total_row);
-                    float rate_trans = (matrix[i][j] / total_row) * 100;
+                    float rate_index = ((matrix[i][j] / total_row) * 100);
                     // System.out.print(rate_trans + " ");
-                    matrix_rate[i][j] = rate_trans;
+                    matrix_rate[i][j] = rate_index;
                 } else {
                     // System.out.print(matrix[i][j] + " ");
                     matrix_rate[i][j] = 0;
@@ -28,8 +28,8 @@ public class transition_probability_matrix {
         return matrix_rate;
     }
 
-    public static void write_csv(int[][] matrix) {
-        String csvFilePath = "/home/duc/Java_Project/Do_an_3/src/file.csv";
+    public static void write_csv(float[][] matrix, String file_name) {
+        String csvFilePath = "/home/duc/Java_Project/Do_an_3/src/" + file_name + ".csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath))) {
             // Ghi dữ liệu vào file CSV
             for (int i = 0; i < matrix.length; i++) {
@@ -103,6 +103,17 @@ public class transition_probability_matrix {
         return key_int;
     }
 
+    public static int get_key_5(double number1, double number2, double number3, double number4, double number5){
+        int key_1, key_2, key_3, key_4, key_5;
+        key_1 = get_key(number1);
+        key_2 = get_key(number2);
+        key_3 = get_key(number3);
+        key_4 = get_key(number4);
+        key_5 = get_key(number5);   
+        int key_int =  (int) (key_1 * Math.pow(key_1, 4) + key_2 * Math.pow(key_2, 3) + key_3 * 400 + key_4 * 20 + key_5);    
+        return key_int;
+    }
+
     public static int[][] create_matrix(File name_file, int level_matrix) {
         int len_matrix = (int) Math.pow(20, level_matrix);
         int[][] matrix = new int[len_matrix][len_matrix];
@@ -114,64 +125,77 @@ public class transition_probability_matrix {
         }
 
         try {
-            // Scanner train = new Scanner(name_file);
-            // train.useDelimiter(",");
 
             List<Double> arr_train = read_csv.write_array(name_file);
-            int key_int = get_key(arr_train.get(0));
+            // int key_int = get_key(arr_train.get(0));
 
             switch (level_matrix) {
                 case 1:
-                    for (int i = 0; i < arr_train.size(); i++) {
-                        // System.out.println(previous_key);
-                        if (previous_key == 100) {
-                            previous_key = key_int;
-                        } else {
-                            int now_key = key_int;
-                            // if (now_key == 20) {
-                            //     now_key = 19;
-                            // }
-                            matrix[previous_key][now_key] += 1;
-                            // System.out.println(matrix[previous_key][now_key]);
-                            previous_key = now_key;
-                        }
+                    int pre_key1 = get_key(arr_train.get(0));
+                    for (int i = 1; i < arr_train.size(); i++) {
+                        int now_key = get_key(arr_train.get(i));
+                        matrix[pre_key1][now_key] += 1;
+                        // System.out.println(matrix[previous_key][now_key]);
+                        pre_key1 = now_key;
+                        // }
                     }
                     break;
                 case 2:
                     double pre_num_1 = arr_train.get(0);
                     double pre_num_2 = arr_train.get(1);
-                    int pre_key = get_key_2(pre_num_1, pre_num_2);
+                    int pre_key2 = get_key_2(pre_num_1, pre_num_2);
 
-                    for (int i = 2; i < arr_train.size(); i += 2) {
+                    for (int i = 1; i < arr_train.size() - 1; i += 1) {
                         double now_num_1 = arr_train.get(i);
                         double now_num_2 = arr_train.get(i + 1);
                         int now_key = get_key_2(now_num_1, now_num_2);
 
-                        matrix[pre_key][now_key] += 1;
-                        pre_key = now_key;
+                        matrix[pre_key2][now_key] += 1;
+                        pre_key2 = now_key;
+                    }
+                    break;
+                case 5:
+                    double pre_num1 = arr_train.get(0);
+                    double pre_num2 = arr_train.get(1);
+                    double pre_num3 = arr_train.get(2);
+                    double pre_num4 = arr_train.get(3);
+                    double pre_num5 = arr_train.get(4);
+                    int pre_key5 = get_key_5(pre_num1, pre_num2, pre_num3, pre_num4, pre_num5);
+
+                    for (int i = 1; i < arr_train.size() - 4; i++){
+                        double now_num_1 = arr_train.get(i);
+                        double now_num_2 = arr_train.get(i + 1);
+                        double now_num_3 = arr_train.get(i + 2);
+                        double now_num_4 = arr_train.get(i + 3);
+                        double now_num_5 = arr_train.get(i + 4);
+                        int now_key = get_key_5(now_num_1, now_num_2, now_num_3, now_num_4, now_num_5);
+
+                        matrix[pre_key5][now_key] += 1;
+                        pre_key5 = now_key;
                     }
                     break;
             }
-            for (int i = 0; i < matrix.length; i++) {
-                float total_row = 0;
-                for (int j = 0; j < matrix[0].length; j++) {
-                    total_row += matrix[i][j];
-                }
-                for (int j = 0; j < matrix[0].length; j++) {
-                    if (total_row != 0) {
-                        // System.out.print(matrix[i][j] / total_row);
-                        float rate_trans = (matrix[i][j] / total_row) * 100;
-                        // System.out.print(rate_trans + " ");
-                        matrix[i][j] = (int) rate_trans;
-                    } else {
-                        // System.out.print(matrix[i][j] + " ");
-                        matrix[i][j] = 0;
-                    }
+            // for (int i = 0; i < matrix.length; i++) {
+            //     float total_row = 0;
+            //     for (int j = 0; j < matrix[0].length; j++) {
+            //         total_row += matrix[i][j];
+            //     }
+            //     for (int j = 0; j < matrix[0].length; j++) {
+            //         if (total_row != 0) {
+            //             // System.out.print(matrix[i][j] / total_row);
+            //             float rate_trans = (matrix[i][j] / total_row) * 100;
+            //             // System.out.print(rate_trans + " ");
+            //             matrix[i][j] = (int) rate_trans;
+            //         } else {
+            //             // System.out.print(matrix[i][j] + " ");
+            //             matrix[i][j] = 0;
+            //         }
 
-                }
-                // System.out.println();
-            }
-            write_csv(matrix);
+            //     }
+            //     // System.out.println();
+            float[][] matrix_final = cal_rate(matrix);
+            
+            write_csv(matrix_final, "rate");
 
         } catch (Exception e) {
             System.out.println(e);
