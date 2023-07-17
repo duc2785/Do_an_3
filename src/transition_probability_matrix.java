@@ -4,7 +4,7 @@ import java.util.*;
 public class transition_probability_matrix {
     public static int previous_key = 100;
 
-    public static float[][] cal_rate(int[][] matrix) {
+    public static float[][] cal_rate(float[][] matrix) {
         float[][] matrix_rate = new float[matrix.length][matrix.length];
         for (int i = 0; i < matrix.length; i++) {
             float total_row = 0;
@@ -114,9 +114,9 @@ public class transition_probability_matrix {
         return key_int;
     }
 
-    public static int[][] create_matrix(File name_file, int level_matrix) {
+    public static float[][] create_matrix(File name_file, int level_matrix) {
         int len_matrix = (int) Math.pow(20, level_matrix);
-        int[][] matrix = new int[len_matrix][len_matrix];
+        float[][] matrix = new float[len_matrix][len_matrix];
         // Gán các phần tử của ma trận là 0
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -193,9 +193,9 @@ public class transition_probability_matrix {
 
             //     }
             //     // System.out.println();
-            float[][] matrix_final = cal_rate(matrix);
+            matrix = cal_rate(matrix);
             
-            write_csv(matrix_final, "rate");
+            write_csv(matrix, "rate");
 
         } catch (Exception e) {
             System.out.println(e);
